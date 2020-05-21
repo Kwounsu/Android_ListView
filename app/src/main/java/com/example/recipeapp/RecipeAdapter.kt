@@ -33,7 +33,7 @@ class RecipeAdapter(private val context: Context,
     }
 
     override fun getItemId(position: Int): Long {
-        return position.toLong()
+        return dataSource[position].getRecipeId()
     }
 
     override fun getCount(): Int {
