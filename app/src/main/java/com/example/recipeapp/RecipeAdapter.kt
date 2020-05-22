@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 
-class RecipeAdapter(private val context: Context,
-                    private val dataSource: ArrayList<Recipe>): BaseAdapter() {
+class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>): BaseAdapter() {
 
     private var layoutInflater: LayoutInflater = context.getSystemService(
         Context.LAYOUT_INFLATER_SERVICE
@@ -21,17 +20,18 @@ class RecipeAdapter(private val context: Context,
         val viewHolder : ViewHolder
         val listItemRowView : View
 
-        // convertView iss null when executing for first time
+        // convertView is null when executing for first time
         if ( convertView == null ) {
             listItemRowView = layoutInflater.inflate(R.layout.recipe_list_item, parent, false)
             viewHolder = ViewHolder()
             viewHolder.recipeTitle = listItemRowView.findViewById(R.id.recipe_title_txt)
             viewHolder.recipeDescription = listItemRowView.findViewById(R.id.recipe_description_txt)
-            // setting view holder as tag to the row of list at this position
+            // setting view holder as tag to the row of list at this position (TAG)
             listItemRowView.tag = viewHolder
             Log.d("RecipeApp","==>getView() $position ==> convert == null")
         } else {
             listItemRowView = convertView
+            // setting viewHolder from the tag has been set in the if statement (TAG)
             viewHolder = listItemRowView.tag as ViewHolder
             Log.d("RecipeApp","==>getView() $position ==> convert != null")
         }

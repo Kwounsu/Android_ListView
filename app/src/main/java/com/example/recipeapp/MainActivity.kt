@@ -2,6 +2,7 @@ package com.example.recipeapp
 
 import android.os.Bundle
 import android.widget.ListView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -15,8 +16,16 @@ class MainActivity : AppCompatActivity() {
         // Using Default adapter
 //        val recipeAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, getRecipeTitles())
         // Using Custom adapter
-        val recipeAdapter = RecipeAdapter(this, getRecipes())
+        val recipeList = getRecipes()
+        val recipeAdapter = RecipeAdapter(this, recipeList)
         recipeListView.adapter = recipeAdapter
+
+        recipeListView.setOnItemClickListener {
+            // lambda expression
+            parent, view, position, id ->
+            val recipe = recipeList[position]
+            Toast.makeText(this,"Click on ListItem recipe: "+recipe.getRecipeName(),Toast.LENGTH_LONG).show()
+        }
     }
 
 //    fun getRecipeTitles():ArrayList<String> {
