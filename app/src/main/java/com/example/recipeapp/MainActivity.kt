@@ -14,7 +14,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         recipeListView = findViewById(R.id.recipe_list)
+        // Using Default adapter
 //        val recipeAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, getRecipeTitles())
+        // Using Custom adapter
         val recipeAdapter = RecipeAdapter(this, getRecipes())
         recipeListView.adapter = recipeAdapter
     }
