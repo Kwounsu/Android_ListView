@@ -1,15 +1,13 @@
 package com.example.recipeapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.ListView
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recipeListView : ListView
 
-    // ListView <-- Adaptor <-- Data Source (db, file, network)
+    // ListView <--> Adaptor <--> Data Source (db, file, network)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
