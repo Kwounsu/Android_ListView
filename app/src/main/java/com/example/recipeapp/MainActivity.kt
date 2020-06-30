@@ -1,9 +1,14 @@
 package com.example.recipeapp
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
+import android.view.Menu
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recipeListView : ListView
@@ -12,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         recipeListView = findViewById(R.id.recipe_list)
         // Using Default adapter
 //        val recipeAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, getRecipeTitles())
@@ -26,17 +32,18 @@ class MainActivity : AppCompatActivity() {
             val recipe = recipeList[position]
             Toast.makeText(this,"Click on ListItem recipe: "+recipe.getRecipeName(),Toast.LENGTH_LONG).show()
         }
-    }
 
-//    fun getRecipeTitles():ArrayList<String> {
-//        val recipeList = getRecipes()
-//        val recipesTitleList:ArrayList<String> = ArrayList()
-//        for (i in 0 until recipeList.size) {
-//            // calling getView
-//            recipesTitleList.add(recipeList[i].mRecipeName)
-//        }
-//        return recipesTitleList
-//    }
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                recipeAdapter.filter.filter(newText)
+                return false
+            }
+        })
+    }
 
     // Data Source
     fun getRecipes():ArrayList<Recipe> {
@@ -64,4 +71,16 @@ class MainActivity : AppCompatActivity() {
         recipes.add(Recipe(21, "Bolt", "Bolt recipe"))
         return recipes
     }
+
+
+
+//    fun getRecipeTitles():ArrayList<String> {
+//        val recipeList = getRecipes()
+//        val recipesTitleList:ArrayList<String> = ArrayList()
+//        for (i in 0 until recipeList.size) {
+//            // calling getView
+//            recipesTitleList.add(recipeList[i].mRecipeName)
+//        }
+//        return recipesTitleList
+//    }
 }

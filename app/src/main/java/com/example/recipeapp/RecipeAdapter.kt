@@ -6,9 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.TextView
 
-class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>): BaseAdapter() {
+class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>): BaseAdapter(),
+    Filterable {
+
+    var recipe = dataSource
+    var myFilter: FilterHelper =FilterHelper(dataSource,this)
 
     private var layoutInflater: LayoutInflater = context.getSystemService(
         Context.LAYOUT_INFLATER_SERVICE
@@ -28,12 +34,10 @@ class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>)
             viewHolder.recipeDescription = listItemRowView.findViewById(R.id.recipe_description_txt)
             // setting view holder as tag to the row of list at this position (TAG)
             listItemRowView.tag = viewHolder
-            Log.d("RecipeApp","==>getView() $position ==> convert == null")
         } else {
             listItemRowView = convertView
             // setting viewHolder from the tag has been set in the if statement (TAG)
             viewHolder = listItemRowView.tag as ViewHolder
-            Log.d("RecipeApp","==>getView() $position ==> convert != null")
         }
 
         // setting information recipe object
@@ -44,15 +48,15 @@ class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>)
     }
 
     override fun getItem(position: Int): Recipe {
-        return dataSource[position]
+        return recipe[position]
     }
 
     override fun getItemId(position: Int): Long {
-        return dataSource[position].getRecipeId()
+        return recipe[position].getRecipeId()
     }
 
     override fun getCount(): Int {
-        return dataSource.size
+        return recipe.size
     }
 
     private class ViewHolder {
@@ -60,4 +64,14 @@ class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>)
         lateinit var recipeDescription : TextView
     }
 
+    /*
+    * For SearchView
+     */
+    override fun getFilter(): Filter {
+        return myFilter
+    }
+
+    fun setFilter(arrayList: ArrayList<Recipe>) {
+        recipe=arrayList
+    }
 }
