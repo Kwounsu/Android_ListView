@@ -14,11 +14,12 @@ import kotlin.collections.ArrayList
 
 class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>): BaseAdapter() {
 
-    var dataList: ArrayList<Recipe> = dataSource
-    var arrayList = mutableListOf<Recipe>() as ArrayList<Recipe>
-
+    /*
+    * For SearchView
+     */
+    var savedDataSource = mutableListOf<Recipe>() as ArrayList<Recipe>
     init {
-        arrayList.addAll(dataList)
+        savedDataSource.addAll(dataSource)
     }
 
     private var layoutInflater: LayoutInflater = context.getSystemService(
@@ -52,15 +53,15 @@ class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>)
     }
 
     override fun getItem(position: Int): Recipe {
-        return dataList[position]
+        return dataSource[position]
     }
 
     override fun getItemId(position: Int): Long {
-        return dataList[position].getRecipeId()
+        return dataSource[position].getRecipeId()
     }
 
     override fun getCount(): Int {
-        return dataList.size
+        return dataSource.size
     }
 
     private class ViewHolder {
@@ -73,13 +74,13 @@ class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>)
      */
     fun filter(charText: String) {
         val text = charText.toLowerCase(Locale.getDefault())
-        dataList.clear()
+        dataSource.clear()
         if (charText.isEmpty()) {
-            dataList.addAll(arrayList)
+            dataSource.addAll(savedDataSource)
         } else {
-            for (wp in arrayList) {
+            for (wp in savedDataSource) {
                 if (wp.getRecipeName().toLowerCase(Locale.getDefault()).contains(text)) {
-                    dataList.add(wp)
+                    dataSource.add(wp)
                 }
             }
         }
