@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var recipeListView : ListView
+    lateinit var editSearch: SearchView
 
     // ListView <--> Adaptor <--> Data Source (db, file, network)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,13 +34,19 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this,"Click on ListItem recipe: "+recipe.getRecipeName(),Toast.LENGTH_LONG).show()
         }
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
+        /*
+        * SEARCH VIEW
+         */
+        editSearch = findViewById(R.id.searchView)
+        editSearch.queryHint = "Search Here"
+        editSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String): Boolean {
+                recipeAdapter.filter(query)
                 return false
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                recipeAdapter.filter.filter(newText)
+            override fun onQueryTextChange(newText: String): Boolean {
+                recipeAdapter.filter(newText)
                 return false
             }
         })
@@ -71,8 +78,6 @@ class MainActivity : AppCompatActivity() {
         recipes.add(Recipe(21, "Bolt", "Bolt recipe"))
         return recipes
     }
-
-
 
 //    fun getRecipeTitles():ArrayList<String> {
 //        val recipeList = getRecipes()

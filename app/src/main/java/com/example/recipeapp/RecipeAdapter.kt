@@ -9,19 +9,23 @@ import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
+import java.util.*
+import kotlin.collections.ArrayList
 
-class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>): BaseAdapter(),
-    Filterable {
+class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>): BaseAdapter() {
 
-    var recipe = dataSource
-    var myFilter: FilterHelper =FilterHelper(dataSource,this)
+    var dataList: ArrayList<Recipe> = dataSource
+    var arrayList = mutableListOf<Recipe>() as ArrayList<Recipe>
+
+    init {
+        arrayList.addAll(dataList)
+    }
 
     private var layoutInflater: LayoutInflater = context.getSystemService(
         Context.LAYOUT_INFLATER_SERVICE
     ) as LayoutInflater
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-
         val recipe = getItem(position)
         val viewHolder : ViewHolder
         val listItemRowView : View
@@ -48,15 +52,15 @@ class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>)
     }
 
     override fun getItem(position: Int): Recipe {
-        return recipe[position]
+        return dataList[position]
     }
 
     override fun getItemId(position: Int): Long {
-        return recipe[position].getRecipeId()
+        return dataList[position].getRecipeId()
     }
 
     override fun getCount(): Int {
-        return recipe.size
+        return dataList.size
     }
 
     private class ViewHolder {
@@ -67,11 +71,18 @@ class RecipeAdapter(context: Context, private val dataSource: ArrayList<Recipe>)
     /*
     * For SearchView
      */
-    override fun getFilter(): Filter {
-        return myFilter
-    }
-
-    fun setFilter(arrayList: ArrayList<Recipe>) {
-        recipe=arrayList
+    fun filter(charText: String) {
+        val text = charText.toLowerCase(Locale.getDefault())
+        dataList.clear()
+        if (charText.isEmpty()) {
+            dataList.addAll(arrayList)
+        } else {
+            for (wp in arrayList) {
+                if (wp.getRecipeName().toLowerCase(Locale.getDefault()).contains(text)) {
+                    dataList.add(wp)
+                }
+            }
+        }
+        notifyDataSetChanged()
     }
 }
